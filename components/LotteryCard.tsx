@@ -24,8 +24,6 @@ const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
     }
   };
 
-  console.log(lottery);
-
   useEffect(() => {
     getData();
   }, []);
@@ -33,37 +31,6 @@ const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
   const [prevWinners, setPrevWinners] = useState<boolean>(false);
   const [currentPoolStatusExpanded, setCurrentPoolStatusExpanded] =
     useState<boolean>(false);
-
-  const lotteryNoWinners = "15,23,30,43,61,6";
-  const lotteryNumbertwo = "0, 6, 4, 1";
-
-  const pastWinners = [
-    {
-      round: "2302123",
-      ticket: "99,99,99,99,99,99",
-      prize: "14,934,000,000",
-    },
-    {
-      round: "2302123",
-      ticket: "99,99,99,99,99,99",
-      prize: "14,934,000,000",
-    },
-    {
-      round: "2302123",
-      ticket: "99,99,99,99,99,99",
-      prize: "14,934,000,000",
-    },
-    {
-      round: "2302123",
-      ticket: "99,99,99,99,99,99",
-      prize: "14,934,000,000",
-    },
-    {
-      round: "2302123",
-      ticket: "99,99,99,99,99,99",
-      prize: "14,934,000,000",
-    },
-  ];
 
   return (
     <div className={`bg-${accent}-100 rounded-md w-full p-4 space-y-4`}>
@@ -109,7 +76,7 @@ const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
         <>
           <div className=" flex flex-row justify-between items-center">
             <div className=" flex flex-row justify-start items-center gap-2">
-              <h2 className={`text-${accent} text-xl font-bold`}>
+              <h2 className={`text-${accent} text-xl font-bold capitalize`}>
                 {lottery?.type}
               </h2>
               <span className={`text-${accent}`}>
