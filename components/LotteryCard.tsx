@@ -1,0 +1,204 @@
+"use client";
+
+import { Lottery, LotteryCardType } from "@/types";
+import {
+  CHEVRON_DOWN,
+  CHEVRON_UP,
+  MAGNIFYING_MINUS,
+  MAGNIFYING_PLUS,
+} from "@/utils/iconsProvider";
+import React, { useEffect, useState } from "react";
+import NextDraw from "./nextDraw";
+import Countdown from "react-countdown";
+
+const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
+  const [lottery, setLottery] = useState<Lottery | null>(null);
+
+  const getData = async () => {
+    const res = await fetch(`/api/lottery?type=${lotteryType}`);
+    const { data } = await res.json();
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    } else {
+      setLottery(data);
+    }
+  };
+
+  console.log(lottery);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const [prevWinners, setPrevWinners] = useState<boolean>(false);
+  const [currentPoolStatusExpanded, setCurrentPoolStatusExpanded] =
+    useState<boolean>(false);
+
+  const lotteryNoWinners = "15,23,30,43,61,6";
+  const lotteryNumbertwo = "0, 6, 4, 1";
+
+  const pastWinners = [
+    {
+      round: "2302123",
+      ticket: "99,99,99,99,99,99",
+      prize: "14,934,000,000",
+    },
+    {
+      round: "2302123",
+      ticket: "99,99,99,99,99,99",
+      prize: "14,934,000,000",
+    },
+    {
+      round: "2302123",
+      ticket: "99,99,99,99,99,99",
+      prize: "14,934,000,000",
+    },
+    {
+      round: "2302123",
+      ticket: "99,99,99,99,99,99",
+      prize: "14,934,000,000",
+    },
+    {
+      round: "2302123",
+      ticket: "99,99,99,99,99,99",
+      prize: "14,934,000,000",
+    },
+  ];
+
+  return (
+    <div className={`bg-${accent}-100 rounded-md w-full p-4 space-y-4`}>
+      {prevWinners ? (
+        <>
+          <div className=" flex flex-row justify-between items-center">
+            <div className=" flex flex-row justify-start items-center gap-2">
+              <h2 className={`text-${accent} text-xl font-bold capitalize `}>
+                {lottery?.type}
+              </h2>
+              <span className={`text-${accent}`}>Last 5 Winners</span>
+            </div>
+            <button
+              className={` text-${accent}`}
+              onClick={() => setPrevWinners(false)}
+            >
+              {MAGNIFYING_MINUS}
+            </button>
+          </div>
+
+          <div className=" flex flex-col justify-start items-start">
+            {lottery?.lastFiveWinners.map((winner: any, index: number) => {
+              return (
+                <div
+                  className="flex flex-row justify-between items-center w-full"
+                  key={index}
+                >
+                  <p className="font-bold text-sm text-black">
+                    {winner.roundNumber}
+                  </p>
+                  <p className={`font-bold text-sm text-${accent}`}>
+                    {winner.ticketNumber.replaceAll(",", " ")}
+                  </p>
+                  <p className="font-bold text-sm text-black">
+                    {winner.winningAmount}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className=" flex flex-row justify-between items-center">
+            <div className=" flex flex-row justify-start items-center gap-2">
+              <h2 className={`text-${accent} text-xl font-bold`}>
+                {lottery?.type}
+              </h2>
+              <span className={`text-${accent}`}>
+                No. {lottery?.lastLotteryRound}
+              </span>
+            </div>
+            <button
+              className={` text-${accent}`}
+              onClick={() => setPrevWinners(true)}
+            >
+              {MAGNIFYING_PLUS}
+            </button>
+          </div>
+          <div className=" flex flex-">
+            {lottery?.lastWinner.ticketNumber
+              .split(",")
+              .map((segment: string, index: number, array) => {
+                return (
+                  <div
+                    className={`h-12 w-12 border-2  grid place-content-center rounded-full ${
+                      index === array.length - 1
+                        ? `bg-${accent}`
+                        : "bg-dark-gray"
+                    }`}
+                    key={index}
+                  >
+                    <span className={` font-semibold text-2xl text-white `}>
+                      {segment}
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
+          <div className=" flex flex-row justify-between items-center">
+            <h2 className=" text-[13px] font-medium">Winning Pot</h2>
+            <div>
+              <span className=" text-black font-bold text-2xl">
+                {lottery?.lastWinningPot}
+              </span>
+              <span className="ml-2 text-xs font-semibold">LUCKI</span>
+            </div>
+          </div>
+        </>
+      )}
+
+      <NextDraw accent={accent} />
+
+      {currentPoolStatusExpanded && (
+        <div className=" flex flex-col pt-2 ">
+          <h2 className=" text-base font-semibold ">Current Pool Status</h2>
+          {lottery?.currentPoolStatus.tickets.map((ticket, index) => {
+            return (
+              <div className=" flex flex-row justify-between" key={index}>
+                <h3>{ticket.coin}</h3>
+                <p>{ticket.amount}</p>
+              </div>
+            );
+          })}
+          <div className=" border-t-2 flex flex-row justify-end items-center">
+            ={" "}
+            <span className=" text-black font-bold text-2xl">
+              {lottery?.currentPoolStatus.poolAmount}
+              <span className="ml-2 text-xs font-semibold">LUCKI</span>
+            </span>
+          </div>
+        </div>
+      )}
+
+      <div className=" flex flex-row justify-center items-center">
+        <button
+          onClick={() =>
+            setCurrentPoolStatusExpanded(!currentPoolStatusExpanded)
+          }
+        >
+          {currentPoolStatusExpanded ? (
+            <div className=" text-xs flex flex-row justify-center items-center gap-2 capitalize">
+              {CHEVRON_UP}
+              <span> Close</span>
+            </div>
+          ) : (
+            <div className=" text-sm flex flex-row justify-center items-center gap-2">
+              {CHEVRON_DOWN}
+              current pool status
+            </div>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default LotteryCard;
