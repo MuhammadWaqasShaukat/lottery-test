@@ -33,9 +33,9 @@ const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
     useState<boolean>(false);
 
   return (
-    <div className={`bg-${accent}-100 rounded-md w-full p-4 space-y-4`}>
+    <div className={`bg-${accent}-100 rounded-md w-full space-y-4`}>
       {prevWinners ? (
-        <>
+        <div className="col-span-2 p-4">
           <div className=" flex flex-row justify-between items-center">
             <div className=" flex flex-row justify-start items-center gap-2">
               <h2 className={`text-${accent} text-xl font-bold capitalize `}>
@@ -71,9 +71,9 @@ const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
               );
             })}
           </div>
-        </>
+        </div>
       ) : (
-        <>
+        <div className="col-span-2 p-4">
           <div className=" flex flex-row justify-between items-center">
             <div className=" flex flex-row justify-start items-center gap-2">
               <h2 className={`text-${accent} text-xl font-bold capitalize`}>
@@ -119,13 +119,14 @@ const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
               <span className="ml-2 text-xs font-semibold">LUCKI</span>
             </div>
           </div>
-        </>
+        </div>
       )}
-
-      <NextDraw accent={accent} />
+      <div className="w-full">
+        <NextDraw accent={accent} />
+      </div>
 
       {currentPoolStatusExpanded && (
-        <div className=" flex flex-col pt-2 ">
+        <div className=" flex flex-col pt-2 p-4">
           <h2 className=" text-base font-semibold ">Current Pool Status</h2>
           {lottery?.currentPoolStatus.tickets.map((ticket, index) => {
             return (
@@ -145,24 +146,26 @@ const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
         </div>
       )}
 
-      <div className=" flex flex-row justify-center items-center">
-        <button
-          onClick={() =>
-            setCurrentPoolStatusExpanded(!currentPoolStatusExpanded)
-          }
-        >
-          {currentPoolStatusExpanded ? (
-            <div className=" text-xs flex flex-row justify-center items-center gap-2 capitalize">
-              {CHEVRON_UP}
-              <span> Close</span>
-            </div>
-          ) : (
-            <div className=" text-sm flex flex-row justify-center items-center gap-2">
-              {CHEVRON_DOWN}
-              current pool status
-            </div>
-          )}
-        </button>
+      <div className="p-4">
+        <div className=" flex flex-row justify-center items-center">
+          <button
+            onClick={() =>
+              setCurrentPoolStatusExpanded(!currentPoolStatusExpanded)
+            }
+          >
+            {currentPoolStatusExpanded ? (
+              <div className=" text-xs flex flex-row justify-center items-center gap-2 capitalize">
+                {CHEVRON_UP}
+                <span> Close</span>
+              </div>
+            ) : (
+              <div className=" text-sm flex flex-row justify-center items-center gap-2">
+                {CHEVRON_DOWN}
+                current pool status
+              </div>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
