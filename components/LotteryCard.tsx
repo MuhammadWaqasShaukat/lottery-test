@@ -9,7 +9,6 @@ import {
 } from "@/utils/iconsProvider";
 import React, { useEffect, useState } from "react";
 import NextDraw from "./nextDraw";
-import Countdown from "react-countdown";
 
 const LotteryCard = ({ accent, lotteryType }: LotteryCardType) => {
   const [lottery, setLottery] = useState<Lottery | null>(null);

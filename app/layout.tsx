@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { SessionProvider } from "next-auth/react";
+import SessionProviderContextProvider from "@/context/SessionProviderContextProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,15 +22,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          <div className=" w-2/5 mx-auto  space-y-8">
-            <h1 className=" text-2xl font-bold text-black">Latest Results</h1>
-            <div className=" flex flex-row justify-between items-center">
-              <Link href={"/cosmic"}>Cosmic</Link>
-              <Link href={"/classic"}>Classic</Link>
-              <Link href={"/atomic"}>Atomic</Link>
+          <SessionProviderContextProvider>
+            <div className=" w-2/5 mx-auto  space-y-8">
+              <h1 className=" text-2xl font-bold text-black">Latest Results</h1>
+              <div className=" flex flex-row justify-between items-center">
+                <Link href={"/cosmic"}>Cosmic</Link>
+                <Link href={"/classic"}>Classic</Link>
+                <Link href={"/atomic"}>Atomic</Link>
+              </div>
+              {children}
             </div>
-            {children}
-          </div>
+          </SessionProviderContextProvider>
         </main>
       </body>
     </html>
