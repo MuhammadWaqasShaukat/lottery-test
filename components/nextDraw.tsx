@@ -1,4 +1,5 @@
 "use client";
+import { CLOCK } from "@/utils/iconsProvider";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -19,11 +20,16 @@ const NextDraw = ({ accent }: { accent: string }) => {
 
   return (
     <div className={`${accent === "blue" ? "bg-blue" : `bg-${accent}`}`}>
-      <div className={`flex flex-row justify-between text-white p-2`}>
-        <div className=" flex flex-row justify-between items-center gap-2">
-          <h1>Next Draw</h1>
+      <div
+        className={`flex flex-row justify-between items-center text-white px-4 py-2`}
+      >
+        <div className="flex flex-row justify-between items-center gap-2">
+          <h1 className="text-sm leading-3 font-semibold w-[30%]">Next Draw</h1>
+
+          {CLOCK}
+
           <Countdown
-            className="text-lg self-start"
+            className="text-base self-start font-bold flex-1"
             date={Date.now() + 50000000}
           ></Countdown>
         </div>
